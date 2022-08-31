@@ -1,0 +1,84 @@
+name: 'Slack Interaction'
+description: 'Interact with slack within your github action.'
+inputs:
+
+  APPROVAL_MESSAGE:
+    description: |
+      Message to display when requesting approval/continuation of worfklow.
+      Use the following strings to inject github context data into your message:
+        - {{repo_owner}} = github.context.repo.owner
+        - {{repo_name}} = github.context.repo.name
+        - {{run_id}} = github.context.runId
+    required: true
+    default: |
+      Would you like to continue with the current action in the {{repo_name}} repository?
+      ```https://github.com/{{repo_owner}}/actions/runs/{{run_id}}```
+      - Approve: `github_action_reject_{{repo_owner}}_{{repo_name}}_{{run_id}}`
+      - Reject: `github_action_reject_{{repo_owner}}_{{repo_name}}_{{run_id}}`
+
+  APPROVED_STRING:
+    description: |
+      What string look for when approving a github action via slack message.
+      Use the following strings to inject github context data into your message:
+        - {{repo_owner}} = github.context.repo.owner
+        - {{repo_name}} = github.context.repo.repo
+        - {{run_id}} = github.context.runId
+    required: true
+    default: github_action_approve_{{repo_owner}}_{{repo_name}}_{{run_id}}
+
+  FAILURE_ACTION:
+    description: |
+      What action to take when connection to slack fails.
+      Available options are: CONTINUE, STOP
+    required: true
+    default: STOP
+
+  REJECTED_STRING:
+    description: |
+      What string look for when rejecting a github action via slack message.
+      Use the following strings to inject github context data into your message:
+        - {{repo_owner}} = github.context.repo.owner
+        - {{repo_name}} = github.context.repo.repo
+        - {{run_id}} = github.context.runId
+    required: true
+    default: github_action_reject_{{repo_owner}}_{{repo_name}}_{{run_id}}
+
+  SLACK_CHANNEL:
+    description: Slack channel to read/write messages from/to.
+    required: true
+
+  SLACK_TOKEN:
+    description: Slack token with access to read messages and post messages.
+    required: true
+
+  SLACK_USERS_ALLOWED:
+    description: |
+      Slack users to read messages from. Leave empty to read messages from all
+      users. Use csv to only allow one or more users. Ignored users
+      will take priority over allowed slack users.
+    required: false
+    default: ''
+
+  SLACK_USERS_IGNORED:
+    description: |
+      Slack users whose messages should be ignored. The bot should always be
+      included here. Additional non-bot users can be added here as well. Ignored
+      users will take priority over allowed slack users.
+    required: false
+    default: 'Github Action Approvals'
+
+  TIMEOUT:
+    description: How long in seconds to wait for a response from slack.
+    required: true
+    default: '300'
+
+  TIMEOUT_ACTION:
+    description: |
+      What action to take when timeout for slack response is reached.
+      Available options are: CONTINUE, STOP
+    required: true
+    default: STOP
+
+runs:
+  using: 'node16'
+  main: './dist/index.js'
