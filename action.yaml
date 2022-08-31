@@ -1,5 +1,5 @@
-name: 'Slack Interaction'
-description: 'Interact with slack within your github action.'
+name: 'dambrogia/github-action-slack-approval'
+description: 'Approve/Reject your github actions with slack messages.'
 inputs:
 
   APPROVAL_MESSAGE:
