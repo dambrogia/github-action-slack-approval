@@ -39,22 +39,26 @@ jobs:
       - name: Test
         id: npm-ci-test
         run: npm run ci-test
+        env:
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
 
   test-action:
     name: GitHub Actions Test
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v3
-
-      - name: Test Local Action
-        id: test-action
-        uses: ./
+      - uses: actions/checkout@v3
+      - uses: ./
         with:
-          milliseconds: 1000
-
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+          approvalPrefix: approve-ci-
+          errorAction: reject
+          rejectionPrefix: reject-ci-
+          repository: ${{ github.repository }}
+          runId: ${{ github.run_id }}
+          slackAppId: intentional-bad-value-see-tests-for-reason
+          slackChannel: ${{ secrets.SLACK_CHANNEL }}
+          slackHistoryLimit: '15'
+          slackPollPause: '10000' # 10 seconds between polling requests
+          slackPollTimeout: '300000' # 5 min timeout
+          slackToken: ${{ secrets.SLACK_TOKEN }}
+          timeoutAction: reject
