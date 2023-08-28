@@ -1,12 +1,11 @@
 # GitHub Action Slack Approval
 
-![GitHub Action Slack Approvals](https://github.com/dambrogia/github-actions-slack-approval/actions/workflows/test.yml/badge.svg)
+![GitHub Action Slack Approvals](https://github.com/dambrogia/github-actions-slack-approval/actions/workflows/ci.yml/badge.svg)
+![GitHub Action Slack Approvals test coverage](https://github.com/dambrogia/github-actions-slack-approval/badges/coverage.svg)
 
 This is a small action that will allow you to prevent your actions from moving along until they are approved by a slack message.
 
-## Usaging this action
-
-### Using this action:
+## Using this action
 
 ```yaml
 name: Example Build Job
@@ -54,6 +53,7 @@ jobs:
 ```
 
 ## Possible issues and improvements
-1. Run ID is being used right now for uniqueness in the approval/rejection messages. However, run id is not unique across retry attempts, so if retried it's likely that the old approval would be picked up and the workflow would prematurely continue.
+
+1. Run ID is being used right now for uniqueness in the approval/rejection messages. However, run ID is not unique across retry attempts, so if retried it's likely that the old approval would be picked up and the workflow would prematurely continue.
 2. Provide information on creating a Slack app in your workspace. Possibly create public app for this so others can install it?
-3. Improve experience with slack app id for skipping approval consideration on messages posted by the bot.
+3. Improve experience with slack app ID for skipping approval consideration on messages posted by the bot.
