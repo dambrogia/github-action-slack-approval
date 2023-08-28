@@ -1,19 +1,59 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
-
-# Define your inputs here.
+name: 'Slack Approvals name here'
+description: 'Approve GitHub Action Workflows via Slack'
+author: 'Dominic Dambrogia'
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  approvalPrefix:
+    required: false
+    description: 'The prefix for the message to match for approving a workflow'
+    default: 'approve-'
+  errorAction:
+    required: false
+    description: What action to take when an error occurs (approve | reject)
+    default: reject
+  rejectionPrefix:
+    required: false
+    description: 'The prefix for the message to match for rejecting a workflow'
+    default: 'reject-'
+  repository:
     required: true
-    default: '1000'
+    description: |
+      Should be in the format of: <org|user>/<repo>
+      Used with runId to create link to review the action/workflow
+  runId:
+    required: true
+    description: 'The github run id (github.context.runId)'
+  slackAppId:
+    required: true
+    description: App ID for bot profile to ignore messages for approval/rejection consideration
+  slackChannel:
+    required: true
+    description: Which slack channel to write to, should be prefixed with a "#" character
+  slackHistoryLimit:
+    required: true
+    description: How many messages to look back through in the history when looking for approval/rejection messages
+  slackPollPause:
+    required: false
+    description: When polling slack for messages, how long to wait (in ms) between requests
+    default: '10000'
+  slackPollTimeout:
+    required: false
+    description: How long to poll slack for before timing out
+    default: '10000'
+  slackToken:
+    required: true
+    description: Token to authenticate with slack
+  timeoutAction:
+    required: false
+    description: What action to take if no approval or rejection message is found (approve | reject)
+    default: reject
 
-# Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
-
+  approved:
+    description: Assert if workflow is approved
+  rejected:
+    description: Assert if workflow is rejected
+  error:
+    description: Assert if workflow ran into an error, error will reject workflow.
 runs:
-  using: node16
-  main: dist/index.js
+  using: 'node16'
+  main: 'dist/index.js'
