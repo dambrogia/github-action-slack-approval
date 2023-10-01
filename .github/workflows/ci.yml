@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         id: setup-node
@@ -47,7 +47,7 @@ jobs:
     name: GitHub Actions Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./
         with:
           approvalPrefix: approve-ci-
